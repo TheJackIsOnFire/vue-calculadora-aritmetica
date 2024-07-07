@@ -1,6 +1,7 @@
 <script setup>
-import { Alert } from 'bootstrap';
-import { reactive } from 'vue';
+  import { Alert } from 'bootstrap';
+  import { reactive } from 'vue';
+  import Form from './components/Form.vue'
 
   const state = reactive({
     inputValue1: '',
@@ -31,53 +32,29 @@ import { reactive } from 'vue';
         case "division":
           return division(x, y);
         default:
-          return "Operação inválida";
+          return "Escolha uma operação aritmética para obter um resultado";
       }
     } else {
-      console.log("Erro: Os valores adicionados não são números");
+      alert("Erro: Os valores adicionados não são números");
     }  
   };
 
   const showResults = () => {
     state.result = calculateResult();
-    return state.result
+    return state.result;
   };
+
+
 </script>
 
 <template>
   <div class="container">    
-    <form class="form-control p-5 mt-5">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="p-4">Calculadora Aritmética</h1>
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-6 mb-3">
-          <label class="mb-2 ps-2" for="input1">Digite o primeiro número</label>
-          <input v-model="state.inputValue1" @input="showResults" type="number" class="form-control" id="input1"></div>
-        <div class="col-6 mb-3">
-          <label class="mb-2 ps-2"  for="input2">Digite o segundo número</label>
-          <input v-model="state.inputValue2" @input="showResults"  type="number" class="form-control" id="input2">
-        </div>  
-      </div>
-      <div class=" row form-group">
-        <div class="col-6">
-          <label class="mb-2 ps-2"  for="Control-Select">Escolha a operação aritmética</label>
-          <select  v-model="state.operators" @change="showResults"  class="form-control" id="Control-Select">
-            <option value="addition">Soma</option>
-            <option value="subtraction">Subtração</option>
-            <option value="multiplication">Multiplicação</option>
-            <option value="division">Divisão</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 mt-4 p-3">
-          <strong class="h5">Resultado: {{ state.result }}</strong>
-        </div>
-      </div>
-    </form>
+    <Form :input1-value="state.inputValue1" :input2-value="state.inputValue2" :operators="state.operators" 
+      :input1 ="event => state.inputValue1 = event.target.value"
+      :input2="event => state.inputValue2 = event.target.value"
+      :change-operators="event => state.operators = event.target.value"
+      :show-results="showResults()"
+    ></Form>
   </div>
 </template>
 
